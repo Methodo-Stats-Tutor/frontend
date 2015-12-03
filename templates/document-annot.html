@@ -1,0 +1,211 @@
+<span ng-if="debug"> ZONES {{zones}}</span>
+<section ng-show="section===1">
+    <table  datatable="ng"  class="table table-bordered table-striped">
+        <thead>
+            <TR> 
+                <TH> Titre </TH> 
+                <TH> Document </TH> 
+                <TH> Type </TH> 
+                <TH> Enseignant </TH> 
+                <TH> Débuter </TH> 
+                <TH> Poursuivre </TH> 
+                <TH> Réutiliser </TH> 
+            </TR> 
+        </thead>
+        <tbody>
+            <tr ng-repeat="i in publiList.results.bindings | unique: 'title.value'">
+                <td >{{ i.title.value }}</td>
+                <td >{{ i.fileName.value }}</td>
+                <td >{{ getLocalName(i.type.value) }}</td>
+                <td >{{ i.fname.value+" "+i.lname.value }}</td>
+                <td ><center><button class="btn btn-primary" ng-click="annotate(i);">Débuter</button></center></td>
+                <td ><center><button class="btn btn-primary" ng-disabled="!i.cmAnnotEnCours" ng-click="openContinue(i);">Poursuivre...</button></center></td>
+                <td ><center><button class="btn btn-primary"  ng-disabled="!i.cmAnnotFini" ng-click="openReUse(i);">Réutiliser...</button></center></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<section ng-show="section===2" >
+    <div  class="box-header">
+        <h3 class="box-title">Annotation de <em>{{selectedItem.title.value}}</em></h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        <!--<li ng-repeat="message in messages">{{message}}</li>-->
+        <ng-form name="publi_form" class="css-form" >
+            <div  class="row">
+                <div class="col-md-4">
+                    <!-- DIRECT CHAT -->
+                    <div id=boxZone class="box box-success box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Gestion des zones</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <span data-toggle="tooltip" title="Nombre de zones" class='badge bg-yellow'>{{zones.nbZone}}</span>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <!-- Conversations are loaded here -->
+                            <div class="direct-chat-messages">
+                                <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover"style="width: auto;">
+                                        <tbody>
+                                            <tr ng-class="{'selected':zones.zoneActual===id}" ng-repeat="(id, zone) in zones.zones" ng-click="modifZone(id,'iframe')">
+                                                <td ><input type="text" ng-model="zone.label" placeholder="Label" size="7" required/></td>
+                                                <td><button colorpicker class="btn btn-primary" type="text" colorpicker-close-on-select ng-click="setColorPicker(id)" ng-model="zone.color" ng-style="{ background : zone.color }" >Couleur</button></td>
+                                                <td><button  class="btn btn-default"  ng-click="openTags(zone)"  >Tags</button></td>
+                                                <td><button class="btn btn-danger btn-flat" ng-hide="zones.nbZone==1"ng-click="removeZone(id,'iframe')">X</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.direct-chat-pane -->
+                            </div><!-- /.direct-chat-pane -->
+                        </div><!-- /.box-body -->
+                        <div class="box-footer">
+                            <form action="#" method="post">
+                                <!--<div class="input-group">-->
+                                    <input type="text" ng-model="zones.nom"  placeholder="Nom de l'annotation" required/>
+                                    <button type="button" class="btn btn-primary btn-flat" ng-click="newZone('iframe')"  class="next-question">Nouvelle zone</button>
+                                    <button type="button" class="btn btn-warning btn-flat"  ng-click="save(false)"  ng-disabled="publi_form.$invalid" >Sauver l'avancement</button>
+                                    <button type="button" class="btn btn-danger btn-flat"  ng-click="save(true)"  ng-disabled="publi_form.$invalid" >Sauver définitivement</button>
+                                    <!--</div>-->
+                            </form>
+                            <style>
+                                tr.selected td {
+                                    background: none repeat scroll 0 0 #FFCF8B;
+                                    color: #000000;
+                                }
+                            </style>
+                        </div><!-- /.box-footer-->
+                    </div><!--/.direct-chat -->
+                </div><!-- /.col -->
+            </div><!-- /.col -->
+
+        </ng-form>
+    </div>
+
+    <span data-ng-repeat="ifId in ifsrc">
+
+        <div  class="box ">
+            <span ng-if="!iframe.loaded" style="opacity: 0; -webkit-transition: opacity 0; transition: opacity 0;">
+                <div class="box-body">
+                    Chargement en cours
+                </div><!-- /.box-body -->
+                <!-- Loading (remove the following to stop the loading)-->
+                <div  class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </span>
+            <!-- end loading -->
+            <iframe  id="iframe" iframe-onload="iframeLoadedCallBack()" height={{pageHeight}} width=100% ng-show="ifsrc[0]" ng-src="{{ifsrc[0]}}"> </iframe>
+        </div>
+    </span>
+</section>
+
+<script type="text/ng-template" id="continue.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Liste des annotations débutées</h3>
+    </div>
+    <div class="modal-body">
+
+        <table  datatable="ng"  class="table table-bordered table-striped">
+            <thead>
+                <TR> 
+                    <TH> Nom </TH> 
+                    <TH> Date de modification </TH> 
+                    <TH> Poursuivre </TH> 
+                </TR> 
+            </thead>
+            <tbody>
+                <tr ng-repeat="i in items | unique: 'cmAnnotEnCours.value'">
+                    <td >{{ i.cmAnnotEnCoursNom.value }}</td>
+                    <td >{{ i.d8LastEnCours.value  | date:'medium'}}</td>
+                    <td ><center><a href="#" ng-click="$event.preventDefault(); selected.item = i.cmAnnotEnCours.value;ok()">Poursuivre...</a></center></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Annuler</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="reUse.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Liste des annotations validées</h3>
+    </div>
+    <div class="modal-body">
+
+        <table  datatable="ng"  class="table table-bordered table-striped">
+            <thead>
+                <TR> 
+                    <TH> Nom </TH> 
+                    <TH> Date de modification </TH> 
+                    <TH> Recycler </TH> 
+                </TR> 
+            </thead>
+            <tbody>
+                <tr ng-repeat="i in items | unique: 'cmAnnotFini.value'">
+                    <td >{{ i.cmAnnotFiniNom.value }}</td>
+                    <td >{{ i.d8LastFini.value | date:'medium'}}</td>
+                    <td ><center><a href="#" ng-click="$event.preventDefault(); selected.item = i.cmAnnotFini.value;ok()">Réutiliser...</a></center></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Annuler</button>
+    </div>
+</script>
+
+
+
+<script>//Activation boite de pandor
+    $(function () {
+        //Extend options if external options exist
+        if (typeof AdminLTEOptions !== "undefined") {
+            $.extend(true,
+                     $.AdminLTE.options,
+                     AdminLTEOptions);
+        }
+        //Easy access to options
+        var o = $.AdminLTE.options;
+
+        //Set up the object
+        _init();
+
+        //Activate box widget
+        if (o.enableBoxWidget) {
+            $.AdminLTE.boxWidget.activate();
+        }
+
+        //Activate fast click
+        if (o.enableFastclick && typeof FastClick != 'undefined') {
+            FastClick.attach(document.body);
+        }
+
+        //Activate direct chat widget
+        if (o.directChat.enable) {
+            $(o.directChat.contactToggleSelector).on('click', function () {
+                var box = $(this).parents('.direct-chat').first();
+                box.toggleClass('direct-chat-contacts-open');
+            });
+        }
+
+        /*
+         * INITIALIZE BUTTON TOGGLE
+         * ------------------------
+         */
+        $('.btn-group[data-toggle="btn-toggle"]').each(function () {
+            var group = $(this);
+            $(this).find(".btn").on('click', function (e) {
+                group.find(".btn.active").removeClass("active");
+                $(this).addClass("active");
+                e.preventDefault();
+            });
+
+        });
+    });
+
+    $("#boxZone").draggable({ containment: 'document'}).css("z-index",1).css("position","absolute");
+</script>

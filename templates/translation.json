@@ -1,0 +1,15 @@
+{  
+    "document-upload" : {
+        "fr" : {
+            "TITLE" : "Renseigner les informations",
+            "PS_ID" : "PMID ou DOI :",
+            "PS_JOURNAL" : "Journal :",
+            "PS_TITLE" : "Titre :",
+            "PS_AUTHOR" : "Auteurs :",
+            "PS_ABSTRACT" : "Résumé :",
+            "P_TITLE" : "Titre :",
+            "P_DESCRIPTION" : "Description :"
+
+        }
+    }
+}

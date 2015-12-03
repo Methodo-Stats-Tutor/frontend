@@ -1,0 +1,21 @@
+<table ng-if="result" datatable="ng"  class="table table-bordered table-striped">
+<thead>
+<TR> 
+    <TH ng-repeat="col in result.head.vars"> {{col}} </TH> 
+</TR> 
+</thead>
+<tbody>
+<tr ng-repeat="row in result.results.bindings ">
+<td ng-repeat="col in result.head.vars">{{ row[col].value }}</td>
+</tr>
+</tbody>
+</table>
+
+<ng-form name=queryForm>
+        <div  ng-class="{ 'has-error': error }" >
+            <label for="sparql">Requète SPARQL</label>
+            <textarea id="sparql" class="form-control has-error" rows="5" ng-model="query" required></textarea>
+        </div>
+        <button ng-disabled="queryForm.$invalid" ng-click="getQuery()">Requéter</button>
+    </ng-form>
+            <i class="alert alert-danger fade in" ng-show="error">{{error}}</i>

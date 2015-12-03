@@ -1,0 +1,14 @@
+<span ng-controller="OcpuTestPlotController" >
+<h1>Distributions</h1>
+
+<select ng-model="test" convert-to-number>
+  <option value="T">Symétrique</option>
+  <option value="F">Bi-modale</option>
+  <option value="E">histograme</option>
+</select>
+<button id="submitbutton" type="button" ng-click="testPlot()">Générer</button> <br><br>
+<div >
+<div id="plotdiv" style='width:100% ; height:{{pageHeigth}}px' ></div>    
+</div>
+</span>
+<!--étape 2-->

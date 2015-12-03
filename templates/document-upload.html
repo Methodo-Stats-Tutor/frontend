@@ -1,0 +1,242 @@
+<accordion  close-others="oneAtATime">
+
+<accordion-group heading="Publication Scientifique ( pdf )" is-open="status.publi" >
+
+<span ng-controller="DocumentUploadController">
+    <!--étape 1 : indiquez les métadata-->
+    <form novalidate name="publi">
+        <h3 class="box-title">{{tr.TITLE}}</h3>
+        <div class="input-group input-group-sm">
+            <input class="form-control" type="text" ng-model="search" placeholder="Mot(s) clé(s)" required/>
+            <span class="input-group-btn">
+                <button  class="btn btn-info btn-flat" ng-click="getFromPmid()">Rechercher sur PUBMED</button> <br><br>
+            </span>
+        </div>
+        <div  ng-class="{ 'has-error': error.pmid }" >
+            <label for="pmid">{{tr.PS_ID}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.pmid">{{error.pmid}}</i>
+            <input id="pmid" class="form-control" ng-disabled="!search" ng-model="pmid" style='width:100%' required></input>
+        </div>
+
+        <div  ng-class="{ 'has-error': error.journal }" >
+            <label for="journal">{{tr.PS_JOURNAL}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.journal">{{error.journal}}</i>
+            <input id="journal" class="form-control" ng-disabled="!search" ng-model="journal" style='width:100%' required></input>
+        </div>
+
+
+        <div  ng-class="{ 'has-error': error.title }" >
+            <label for="title">{{tr.PS_TITLE}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.title">{{error.title}}</i>
+            <input id="title" class="form-control" ng-disabled="!search" ng-model="title" style='width:100%' required></input>
+        </div>
+
+        <div  ng-class="{ 'has-error': error.author }" >
+            <label for="author">{{tr.PS_AUTHOR}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.author">{{error.author}}</i>
+            <input id="author" class="form-control" ng-disabled="!search" ng-model="author" style='width:100%' required></input>
+        </div>
+
+        <div  ng-class="{ 'has-error': error.abstract }" >
+            <label for="abstract">{{tr.PS_ABSTRACT}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.abstract">{{error.abstract}}</i>
+            <textarea id="abstract" class="form-control has-error" rows="5" ng-model="abstract" ng-disabled="!search" required></textarea>
+        </div>
+    </form>
+    <section >
+<h3 class="box-title">Charger</h3>
+<div >
+    <div >
+        <input type="file" nv-file-select uploader="uploaderPubli"/><br/>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="50%">Name</th>
+            <th ng-show="uploaderPubli.isHTML5">Size</th>
+            <th ng-show="uploaderPubli.isHTML5">Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in uploaderPubli.queue">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="uploaderPubli.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="uploaderPubli.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+            </td>
+            <td class="text-center">
+                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                    <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</section>
+</span>
+
+</accordion-group>
+<accordion-group heading="Image ( jpeg / png / gif / svg / bmp )" is-open="status.image" >
+<span ng-controller="DocumentUploadController">
+    <!--étape 1 : indiquez les métadata-->
+    <form novalidate name="picture">
+        <h3 class="box-title">{{tr.TITLE}}</h3>
+        <div  ng-class="{ 'has-error': error.pmid }" >
+            <label for="title">{{tr.P_TITLE}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.title">{{error.title}}</i>
+            <input id="title" class="form-control"  ng-model="title" style='width:100%' required></input>
+        </div>
+        <div  ng-class="{ 'has-error': error.abstract }" >
+            <label for="descr">{{tr.P_DESCRIPTION}}</label>
+            <i class="alert alert-danger fade in" ng-show="error.description">{{error.description}}</i>
+            <textarea id="description" class="form-control has-error" rows="5" ng-model="description"  required></textarea>
+        </div>
+    </form>
+    <section ng-if="picture.$valid">
+<h3 class="box-title">Charger</h3>
+<div >
+    <div >
+        <input type="file" nv-file-select uploader="uploaderPicture"/><br/>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="50%">Name</th>
+            <th ng-show="uploaderPicture.isHTML5">Size</th>
+            <th ng-show="uploaderPicture.isHTML5">Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in uploaderPicture.queue">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="uploaderPicture.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="uploaderPicture.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+            </td>
+            <td class="text-center">
+                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                    <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</section>
+</span>
+</accordion-group>
+<accordion-group heading="Livre ( pdf )" is-open="status.book" >
+    <form novalidate name="book">
+        <h3 class="box-title">Étape 1 : Renseigner les informations</h3>
+
+        <div  ng-class="{ 'has-error': error.bookName }" >
+            <label for="pmid">Nom</label>
+            <i class="alert alert-danger fade in" ng-show="error.pmid">{{error.bookName}}</i>
+            <input id="bookName" class="form-control"  ng-model="bookName" style='width:100%' required></input>
+        </div>
+
+        <div  ng-class="{ 'has-error': error.bookEdition }" >
+            <label for="journal">Édition</label>
+            <i class="alert alert-danger fade in" ng-show="error.bookEdition">{{error.bookEdition}}</i>
+            <input id="bookEdition" class="form-control"  ng-model="bookEdition" style='width:100%' required></input>
+        </div>
+
+
+        <div  ng-class="{ 'has-error': error.bookAuthor }" >
+            <label for="title">Auteurs</label>
+            <i class="alert alert-danger fade in" ng-show="error.title">{{error.bookAuthor}}</i>
+            <input id="bookAuthor" class="form-control"  ng-model="bookAuthor" style='width:100%' required></input>
+        </div>
+    <div  ng-class="{ 'has-error': error.bookYear }" >
+            <label for="title">Année :</label>
+            <i class="alert alert-danger fade in" ng-show="error.bookYear">{{error.bookYear}}</i>
+            <input id="bookYear" class="form-control"  ng-model="bookYear" style='width:100%' required></input>
+        </div>
+    </form>
+    <section ng-if="book.$valid">
+<h3 class="box-title">Charger</h3>
+<div >
+    <div >
+        <input type="file" nv-file-select uploader="uploaderBook"/><br/>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="50%">Name</th>
+            <th ng-show="uploaderBook.isHTML5">Size</th>
+            <th ng-show="uploaderBook.isHTML5">Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in uploaderBook.queue">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="uploaderBook.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="uploaderBook.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+            </td>
+            <td class="text-center">
+                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                    <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</section>
+</span>
+</accordion-group>
+<accordion-group heading="Page ( html )" is-open="status.video" >
+    Non implémenté
+</accordion-group>
+<accordion-group heading="Video ( mpeg )" is-open="status.video" >
+    Non implémenté, <a href="http://www.openvideoannotation.org/" target="_blank">cf lien</a>
+</accordion-group>
+<div ng-if="debug">{{status}}</div>
+</accordion>

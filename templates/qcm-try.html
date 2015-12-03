@@ -1,0 +1,115 @@
+<!--SECTION 1-->
+    <span ng-if="debug">{{qcmTry}}</span>
+<section data-ng-show='section===1'>
+    <table  datatable="ng"  class="table table-bordered table-striped">
+        <thead>
+            <TR> 
+                <TH> Nom </TH> 
+                <TH> Date de création </TH> 
+                <TH> Enseignant </TH> 
+                <TH> Difficulté </TH> 
+                <TH> Choisir </TH> 
+            </TR> 
+        </thead>
+        <tbody>
+            <tr ng-repeat="i in qcmList.results.bindings">
+                <td >{{ i.name.value }}</td>
+                <td >{{ i.d8add.value }}</td>
+                <td >{{ i.fname.value+" "+i.lname.value }}</td>
+                <td ><rating  max="5" readonly=true ng-model="i.difficulty.value" titles=""></rating></td>
+                <td ><center><button   ng-class=" i.qcmtry ? 'btn btn-warning' : 'btn btn-primary'" ng-click="setQcmInstance(i)">{{i.qcmtry?'Continuer':'Démarrer'}}</button></center></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<!--FIN SECTION 1-->
+
+<!--SECTION 2-->
+<section ng-show="section===2">
+    <!--<button class="btn btn-primary" data-ng-show="qcmTryList.results.bindings.length == 0&&!inProgress" ng-click="begin();" >Démarrer</button>-->
+    <!--<li  ng-hide="inProgress" data-ng-repeat="o in qcmTryList.results.bindings">Débuté le : {{o.d8add.value}}<button class="btn btn-primary" ng-click="continue(o);">Continuer</button></li>-->
+
+    <span >
+        <button  class="btn btn-primary" ng-click="validate()" ng-disabled="form.$invalid" ng-show="!isFinished()">Valider ma réponse</button>
+        <button  class="btn btn-primary" ng-click="endQcm()" ng-show="isFinished()">Corriger le QCM</button>
+        <ng-form name="form">
+                <progressbar animate="false" value="qcmTry.nowRank" max="qcmData.questions.length" type="success"><b>{{qcmTry.nowRank+" / "+qcmData.questions.length}}</b></progressbar>
+                <div id="test"></div>
+                <h2 id="question" >Question n°{{NowQuestion.rank}} : {{NowQuestion.statement}}</h2>
+
+        <span>Difficulté:<rating  max="5" readonly=true ng-model="NowQuestion.difficulty" ></rating></span>
+        Réponses de Zone :
+            <fieldset  data-ng-repeat="choice in NowQuestion.choicezone">
+                <div>Choix n°{{$index}} : {{choice.publizone.publititle+" / "+choice.publizone.label}}
+                    <span tooltip="À selectionner sur le document"><input type="checkbox" id="{{choice.refersCourseMaterialUid+choice.publizone.id}}" name="{{choice.uid}}" ng-change="stateChanged(qcmTry.result[qcmTry.nowRank].answers[choice.uid].value)" ng-model="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value" ng-init="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value=false"   disabled></span>
+                <div class="btn-group">
+                    <!--<label class="btn btn-primary" name="{{choice.uid}}"  ng-model="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value" ng-disabled="qcmTry.result[qcmTry.nowRank].finished" btn-radio=true required>Vrai</label>-->
+                    <!--<label class="btn btn-primary"  name="{{choice.uid}}" ng-model="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value" ng-disabled="qcmTry.result[qcmTry.nowRank].finished" btn-radio=false required>Faux</label>-->
+                    </div>
+                    <button ng-show="choice.help" ng-click="qcmTry.result[qcmTry.nowRank].answers[choice.uid].help=true;save();">Aide</button>
+                    <input type=text ng-show="qcmTry.result[qcmTry.nowRank].answers[choice.uid].help" ng-model="choice.help" disabled>
+                        <!--<button class="remove" ng-click="showZone(choice.publizone.id,'iframe'+choice.publizone.publiannotuid)" ng-show='resultZone.getItem(zone.uid).visibility!=false'>montrer la zone</button>-->
+                </div>
+            </fieldset>
+        Réponse textuelles :
+            <fieldset  data-ng-repeat="choice in NowQuestion.choicetext">
+                <div>Choix n°{{$index}} : {{choice.label}}
+                <input type="checkbox" name="{{choice.uid}}" ng-model="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value" ng-init="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value=false">
+                <div class="btn-group">
+                    <!--<label class="btn btn-primary" name="{{choice.uid}}"  ng-model="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value" ng-disabled="qcmTry.result[qcmTry.nowRank].finished" btn-radio=true required>Vrai</label>-->
+                    <!--<label class="btn btn-primary"  name="{{choice.uid}}" ng-model="qcmTry.result[qcmTry.nowRank].answers[choice.uid].value" ng-disabled="qcmTry.result[qcmTry.nowRank].finished" btn-radio=false required>Faux</label>-->
+                    </div>
+                    <button  ng-show="choice.help" ng-click="qcmTry.result[qcmTry.nowRank].answers[choice.uid].help=true;save();">Aide</button>
+                    <input type=text ng-show="qcmTry.result[qcmTry.nowRank].answers[choice.uid].help" ng-model="choice.help" disabled>
+                </div>
+            </fieldset>
+        </ng-form>
+    </span>
+</section>
+<!--FIN SECTION 2-->
+
+<!--SECTION 3-4-->
+<section data-ng-show="section ===1 || section=== 2">
+    <hr width=100%  align=left> 
+    <br><br>
+    <span  data-ng-repeat="ifId in ifsrc" class="col-md-12">	
+        <div id="{{'box'+publiAnnot[$index].uid}}"class="box box-success box-header with-border ">
+            <h3 class="box-title">
+                <label for={{"iframe"+publiAnnot[$index].uid}}>{{publiAnnot[$index].publititle}}</label>
+            </h3>
+            <span ng-if="!publiAnnot[$index].loaded" style="opacity: 0; -webkit-transition: opacity 0; transition: opacity 0;">
+                <div class="box-body">
+                    Chargement en cours
+                </div><!-- /.box-body -->
+                <div  class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </span>
+            <iframe iframe-onload="iframeLoadedCallBack(publiAnnot[$index])" id={{"iframe"+publiAnnot[$index].uid}} height={{pageHeight}} width=100% ng-show="ifsrc[$index]" ng-src="{{ifsrc[$index]}}"> </iframe>
+        </div>
+    </span>
+    <br>
+    <span ng-if="debug"> {{qcmTry}}</span>
+    <br>
+</section>
+<!--FIN SECTION 3-4-->
+
+<!--SECTION 3-->
+<section data-ng-show="section===3">
+    <h2>C'est terminé !</h2>
+    <span ng-if="debug">  {{result}}</span>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Note</span>
+                <span class="info-box-number">{{result.mark+" / "+20}}</span>
+            </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div><!-- /.col -->
+    <h4>Détail</h4>
+    <div data-ng-repeat="quest in result.result">Question {{$index+1}} : {{quest.semiNote+" / "+quest.semiTot}} <span ng-if="quest.gameOver">Game Over</span>
+    </div>
+</section>
+<!--FIN SECTION 3-->
+<span ng-if="debug">NOWQUEStION {{NowQuestion}}</span>

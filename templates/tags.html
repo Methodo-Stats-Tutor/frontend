@@ -1,0 +1,75 @@
+
+    <div class="modal-header">
+        <h3 class="modal-title">Liste des annotations validées</h3>
+    </div>
+    <div class="modal-body">
+
+   
+<ng-form name="form" novalidate>
+Recherche :<input type="text" name="search" ng-minlength="3" ng-model="searchPattern" required>{{errorSearch}}
+<button ng-click="searchOnto()" ng-if="form.$valid&&treedump.length===0">Chercher</button>
+<button  ng-click="treeback()" ng-if="treedump.length>0">Retourner à l'arbre</button>
+</ng-form>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body" >
+                <div save-content="file-style-html">
+                    <!-- Note that the tree does not set the background color. We inject it from the wrapper div. -->
+                    <div >
+                        <treecontrol class="tree-classic"
+                        tree-model="treedata"
+                        on-selection="showSelected(node)"
+                        on-node-toggle="showToggle(node)"
+                        >
+                        {{node.label.value}} <button ng-click="buttonClick($event, node)">Choisir</button>
+                        </treecontrol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<ng-form name="form2" novalidate>
+    <div class="col-md-6" >
+     
+        <!--<h4> ID :</h4>-->
+        <!--<p>-->
+            <!--{{selectedNode.id.value}}-->
+        <!--</p>-->
+        <!--<h4> Label :</h4>-->
+        <!--<p>-->
+            <!--{{selectedNode.label.value}}-->
+        <!--</p>-->
+        <!--<h4> Description :</h4>-->
+        <!--<p>-->
+            <!--{{selectedNode.descr.value}}-->
+        <!--</p>-->
+        <!--<h4> R command :</h4>-->
+        <!--<p>-->
+            <!--{{selectedNode.rcommand.value}}-->
+        <!--</p>-->
+        <h4> Selection :</h4>
+        <p>
+            <ul>
+                <li ng-repeat="(k,v) in lastClicked">{{v.label.value}}<button ng-click="deleteTag(k)">X</button>
+                    <select name="singleSelect" id="singleSelect" ng-model="v.accuracy" required>
+                        <option value="">---Adéquation du concept---</option> <!-- not selected / blank option -->
+                        <option value="0">Vague</option> 
+                        <option value="1">Claire</option> 
+                        <option value="2">Très claire</option>
+                    </select>
+                </li>
+            </ul>
+        </p>
+    </div>
+  
+
+</div>
+<!--{{treedata}}-->
+
+</ng-form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="ok()" ng-disabled="form2.$invalid">Ok</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Annuler</button>
+    </div>

@@ -1,0 +1,94 @@
+
+
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 1.0
+        </div>
+        <strong>Copyright &copy; 2014-2015 <a href="http://www.urcpo.pifo.uvsq.fr/">URCPO</a>.</strong> All rights reserved.
+      </footer>
+      <!-- Control Sidebar -->      
+      <span class="control-sidebar control-sidebar-dark" ng-controller='RightSidebarController'>                
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs nav-pills nav-stacked" role="tablist">
+        <li ng-class="{'active':view_tab=='tab1'}"><a  ng-click="changeTab('tab1')" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+        <li ng-class="{'active':view_tab=='tab2'}"><a  ng-click="changeTab('tab2')"  data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <!-- Home tab content -->
+          <div class="tab-pane" ng-class="{'active':view_tab=='tab1'}">
+            <h3 class="control-sidebar-heading">Gestion des<br> annotations</h3>
+<!--nps-->
+<div>
+                  <button class="btn btn-primary btn-block" onclick="zones.createNewZone()"><i class="fa fa-plus"></i> Nouvelle zone</button>
+                  <button class="btn btn-primary btn-block" onclick="highlightSelectedText2(Zones.zoneActual);"><i class="fa fa-plus"></i> Sélection</button>
+                  <button class="btn btn-primary btn-block" onclick="document.getElementById('iframe').contentWindow.colorAnnots(Zones.zoneActual,zones.colZones.get(Zones.zoneActual).color );"><i class="fa fa-plus"></i> MagicD3</button>
+		  <span ng-controller='RightSidebarController'><button class="btn btn-primary btn-block" ng-click="saveSvg()"><i class="fa fa-plus"></i> Save</button></span>
+</div>
+<div> <ul class="todo-list " id="zones"> </ul> </div>
+<!--nps-->
+          </div><!-- /.tab-pane -->
+</span>
+          <!-- Settings tab content -->
+          <div class="tab-pane" ng-class="{'active':view_tab=='tab2'}">            
+            <form method="post">
+              <h3 class="control-sidebar-heading">General Settings</h3>
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Report panel usage
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+                <p>
+                  Some information about this general settings option
+                </p>
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Allow mail redirect
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+                <p>
+                  Other sets of options are available
+                </p>
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Expose author name in posts
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+                <p>
+                  Allow the user to show his name in blog posts
+                </p>
+              </div><!-- /.form-group -->
+
+              <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Show me as online
+                  <input type="checkbox" class="pull-right" checked />
+                </label>                
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Turn off notifications
+                  <input type="checkbox" class="pull-right" />
+                </label>                
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Delete chat history
+                  <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                </label>                
+              </div><!-- /.form-group -->
+            </form>
+          </div><!-- /.tab-pane -->
+        </div>
+      </span><!-- /.control-sidebar -->
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class='control-sidebar-bg'></div>

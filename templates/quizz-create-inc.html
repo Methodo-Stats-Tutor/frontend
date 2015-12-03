@@ -1,0 +1,50 @@
+<h2>Étape n°2 : Édition du quizz</h2>
+
+                <button  ng-click="start()" >Démarrer</button>
+
+                <div ng-show="inProgress"><h2 id="question" >Intitulé de la question n°{{id}} : {{question}}</h2>
+		<input type="text" ng-model="question" required/><span ng-show='question'>difficulté:<input type=text ng-model="difficulty"/></span>
+</div>
+<div data-ng-repeat="pa in zones">
+{{pa.nom}}
+          <fieldset ng-show=question data-ng-repeat="zone in pa.publiZone">
+   
+      <input type="text" ng-model="zone.name" name="" ng-show='zone.type==="1"' placeholder="Entrez une réponse">
+      <input type="text" ng-model="zone.label" name=""  disabled>
+<a href ng-click='setResultZone(zone.uri,{id:zone.uri,value:true,visibility:true})'ng-show='resultZone.getItem([id,pa.uri,zone.id].join(";")).visibility!=false'><i class="fa fa-good fa-thumbs-o-up"></i></a>
+<a href ng-click='setResultZone(zone.uri,{id:zone.uri,value:false,visibility:true})'ng-show='resultZone.getItem([id,pa.uri,zone.id].join(";")).visibility!=false'><i class="fa fa-good fa-thumbs-o-down"></i></a>
+<button ng-click='setResultZone([id,pa.uri,zone.id].join(";"),{visibility:false})'ng-show='resultZone.getItem([id,pa.uri,zone.id].join(";")).visibility!=false'>Exclure</button></i></a>
+<button ng-click='setResultZone([id,pa.uri,zone.id].join(";"),{value:true,visibility:true})' ng-show='resultZone.getItem([id,pa.uri,zone.id].join(";")).visibility==false'>Inclure</button></i></a>
+
+      <button class="remove" ng-click="showZone('zone'+$index,'iframe'+pa.pmid+pa.nom)" ng-show='resultZone.getItem([id,pa.uri,zone.id].join(";")).visibility!=false'>montrer la zone</button>
+   </fieldset>
+</div>
+Réponses
+          <fieldset  data-ng-repeat="choice in resultText">
+      <input type="text" ng-model="choice.label" name=""  placeholder="Entrez une réponse">
+<a href ng-click='choice.value=true'><i class="fa fa-good fa-thumbs-o-up"></i></a>
+<a href ng-click='choice.value=false'><i class="fa fa-good fa-thumbs-o-down"></i></a>
+
+
+      <button class="remove" ng-hide='choice.color' ng-click="removeChoice($index)">-</button>
+   </fieldset>
+   <button ng-show=question class="addfields" ng-click="addNewChoice()">Ajouter une réponse</button>
+       
+  
+                <button ng-show=question ng-click="nextQuestion()" >Valider la question</button>
+
+        <div id="score">
+                <!--Zones: {{zones}}-->
+              <h4>  Json: {{qcm}}</h4>
+        </div>
+
+
+<!--<h2>Étape n°3 : Voir le quizz</h2>-->
+<!--<span data-ng-repeat="q in jsonFinal.questions" >-->
+<!--<div>-->
+<!--<h4>Question {{q.id}}</h4><input type=text  ng-model="q.question" /><button ng-click=>Modifier</button>-->
+<!--<div>Bonnes réponses :</div>-->
+<!--<div>Mauvaises réponses :</div>-->
+<!--</div>-->
+<!--</span>-->
+

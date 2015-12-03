@@ -1,0 +1,19 @@
+<table datatable="ng"  class="table table-bordered table-striped">
+<thead>
+<TR> 
+<TH> Sujet </TH> 
+<TH> Prédicat </TH> 
+<TH> Objet </TH> 
+</TR> 
+</thead>
+<tbody>
+<tr ng-repeat="x in result.results.bindings ">
+<td ng-if="$odd" style="background-color:#f1f1f1">{{ x.s.value }}</td>
+<td ng-if="$even">{{ x.s.value }}</td>
+<td ng-if="$odd" style="background-color:#f1f1f1">{{ x.p.value }}</td>
+<td ng-if="$even">{{ x.p.value }}</td>
+<td ng-if="$odd" style="background-color:#f1f1f1">{{ x.o.value }}</td>
+<td ng-if="$even">{{ x.o.value }}</td>
+</tr>
+</tbody>
+</table>

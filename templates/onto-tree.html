@@ -1,0 +1,57 @@
+<ng-form name="form" novalidate>
+    Recherche :<input type="text" name="search" ng-minlength="3" ng-model="searchPattern" ng-keyup="$event.keyCode == 13 &&form.$valid&&treedump.length===0? searchOnto() : null" required>{{errorSearch}}
+    <button ng-click="searchOnto()" ng-if="form.$valid&&treedump.length===0">Chercher</button>
+    <button  ng-click="treeback()" ng-if="treedump.length>0">Retourner à l'arbre</button>
+</ng-form>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body" >
+                <div save-content="file-style-html">
+                    <!-- Note that the tree does not set the background color. We inject it from the wrapper div. -->
+                    <div >
+                        <treecontrol class="tree-classic"
+                        tree-model="treedata"
+                        on-selection="showSelected(node)"
+                        on-node-toggle="showToggle(node)"
+                        >
+                        {{node.label.value}} 
+                        </treecontrol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" >
+
+        <span ng-show="selectedNode.id.value">
+            <h4> ID :</h4>
+            <p>
+                {{selectedNode.id.value}}
+            </p>
+        </span>
+
+        <span ng-show="selectedNode.label.value">
+            <h4> Label :</h4>
+            <p>
+                {{selectedNode.label.value}}
+            </p>
+        </span>
+        <span ng-show="selectedNode.descr.value">
+            <h4> Description :</h4>
+            <p>
+                {{selectedNode.descr.value}}
+            </p>
+        </span>
+        <span ng-show="selectedNode.rcommand.value">
+            <h4> R command :</h4>
+            <p>
+                {{selectedNode.rcommand.value}}
+            </p>
+        </span>
+    </div>
+
+
+</div>
+<!--{{treedata}}-->
+
