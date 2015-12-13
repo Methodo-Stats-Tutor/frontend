@@ -318,6 +318,8 @@ mstApp.controller("OntologyTreeController", function($scope, TupleRestService, C
     $scope.init = function(){
         $scope.treedata=[
             {label: {value:"STATO"}, id:{value:"http://purl.obolibrary.org/obo/BFO_0000001"}, type: "folder", children: [{}]
+            },
+            {label: {value:"OBI"}, id:{value:"http://www.ifomis.org/bfo/1.1#Entity"}, type: "folder", children: [{}]
             }
 
         ];
