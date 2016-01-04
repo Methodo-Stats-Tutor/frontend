@@ -64,7 +64,7 @@
                             <form action="#" method="post">
                                 <!--<div class="input-group">-->
                                     <input type="text" ng-model="zones.nom"  placeholder="Nom de l'annotation" required/>
-                                    <button type="button" class="btn btn-primary btn-flat" ng-click="newZone('iframe')"  class="next-question">Nouvelle zone</button>
+                                    <button type="button" class="btn btn-primary btn-flat" ng-click="newZone('iframe')"  class="next-question" ng-disabled="publi_form.$invalid">Nouvelle zone</button>
                                     <button type="button" class="btn btn-warning btn-flat"  ng-click="save(false)"  ng-disabled="publi_form.$invalid" >Sauver l'avancement</button>
                                     <button type="button" class="btn btn-danger btn-flat"  ng-click="save(true)"  ng-disabled="publi_form.$invalid" >Sauver définitivement</button>
                                     <!--</div>-->
