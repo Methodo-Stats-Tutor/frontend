@@ -7,11 +7,19 @@ app.factory('QcmRestService',  function($http, ROOTS, Session) {
     var encodedString = Session.getEncodedStringForBasicAuth();
 
     dataFactory.insertQcm = function (qcm) {
+        return $http.post(urlBase + "/qcm/save/", qcm);
+    };
+
+    dataFactory.createQcm = function (qcm) {
         return $http.post(urlBase + "/qcm/", qcm);
     };
 
     dataFactory.updateQcm = function (qcm) {
         return $http.put(urlBase + '/qcm/' + qcm.uid,  qcm)
+    };
+
+    dataFactory.saveQcmNotion = function (notions, qcmuid) {
+        return $http.post(urlBase + '/qcm/savenotion/' + qcmuid, notions)
     };
 
     dataFactory.getQcmNotion = function (qcm) {
@@ -29,7 +37,6 @@ app.factory('QcmRestService',  function($http, ROOTS, Session) {
     dataFactory.getQcmTrys = function () {
         return $http.get(urlBase + "/qcmtrys/" + Session.user.uid);
     };
-
 
     dataFactory.updateQcmTry = function (cust) {
         return $http.put(urlBase + '/qcmtry/' + cust.uid, cust)
@@ -51,6 +58,7 @@ app.factory('QcmRestService',  function($http, ROOTS, Session) {
         return $http.delete(urlBase + '/' + id);
         var app = angular.module('mstQcm', []);
     };
+
     return dataFactory;
 });
 
@@ -128,30 +136,75 @@ app.controller('QcmCreateController', function($scope, $sce,$timeout, CourseMate
         $scope.section = 4;
         $scope.newQuestion();
     };
-$scope.notions;
-    $scope.save = function(finished){
-        $scope.qcm.finished = finished;
+
+    $scope.notions = {};
+    //sauvegarde du QCM (pas de retour arrière)
+    $scope.save = function(){
+        $scope.qcm.finished = false;
         if(!$scope.qcm.uid){
-            console.log("save")
-            QcmRestService.insertQcm($scope.qcm)
-            .success(function(data){ //alert("Qcm enregistré avec succès")
-                     $scope.qcm.uid = data.qcmUid;
-                     QcmRestService.getQcmNotion($scope.qcm)
-                     .success(function(data){ //on passe aux notions abordées par cet exercice
-                         $scope.section = 5;
-                         $scope.notions = data;
-                     })
-                     .error(function(error){alert("Une erreur est apparue"+error.message)});
+        QcmRestService.createQcm($scope.qcm)
+        .success(function(data){
+            $scope.qcm.uid = data.qcmUid;
+        $scope.saveQcm();
+
+        })
+        .error(function(error){alert("Une erreur est apparue"+error.message)});
+        }else{
+        $scope.saveQcm();
+        }
+    };
+    //etape de sauvegarde
+    $scope.saveQcm = function(){
+        QcmRestService.insertQcm($scope.qcm)
+        .success(function(data){
+            $scope.qcm.uid = data.qcmUid;
+            QcmRestService.getQcmNotion($scope.qcm)
+            .success(function(data){ //on passe aux notions abordées par cet exercice
+                $scope.section = 5;
+                $scope.notions.traite=[];
+                $scope.notions.give=[];
+                $scope.notions.need=[];
+                angular.forEach(data.results.bindings,function(v,k){
+                    if(v.TYP.value==='traite')
+                        $scope.notions.traite.push(v.NOTION.value)
+                    if(v.TYP.value==='need')
+                        $scope.notions.need.push(v.NOTION.value)
+                    if(v.TYP.value==='give')
+                        $scope.notions.give.push(v.NOTION.value)
+                })
             })
             .error(function(error){alert("Une erreur est apparue"+error.message)});
-        }else{
-            console.log("update")
+        })
+        .error(function(error){alert("Une erreur est apparue"+error.message)});
+    }
+    //Sauvegarde de l'avancement
+    $scope.saveTemp = function(){
+        $scope.qcm.finished = false;
+        if(!$scope.qcm.uid){
+        QcmRestService.createQcm($scope.qcm)
+        .success(function(data){
+            $scope.qcm.uid = data.qcmUid;
             QcmRestService.updateQcm($scope.qcm)
             .success(function(){alert("Avancement enregistré")})
             .error(function(error){alert("Une erreur est apparue : "+error.message)})
-        }
-    };
 
+        })
+        .error(function(error){alert("Une erreur est apparue"+error.message)});
+        }
+                    
+    }
+    //Finish : ajout des notions aux qcm
+    $scope.saveNotion = function(){
+        $scope.qcm.finished = false;
+        QcmRestService.saveQcmNotion($scope.notions,$scope.qcm.uid)
+        .success(function(data){
+            alert("Qcm enregistré")
+                $scope.section = 1;
+        })
+        .error(function(error){alert("Une erreur est apparue"+error.message)});
+    }
+
+    //récupération des documents annotés
     CourseMaterialRestService.getPublisAnnot()
     .success(function (data) {
         $scope.publiAnnotList = data;
@@ -285,13 +338,13 @@ $scope.notions;
     };
     $scope.reprendre = function(qcmUri){
         $scope.init();
-        $scope.goSection(4);
+        $scope.goSection(2);
         QcmRestService.getQcm(qcmUri)
         .success(function(data){
             console.log("continue %o", data);
             var pData = angular.fromJson(data);
             $scope.qcm = angular.fromJson(pData.qcmJson);
-            delete $scope.qcm.uid ;
+            delete $scope.qcm.uid ;//assure qu'une nouvelle instance de ce qcm sera crée
             var referstopubliannot = pData.referstopubliannot;
             angular.forEach(referstopubliannot, function(pub){
                 $scope.publiAnnot.push(pub);

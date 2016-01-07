@@ -8,16 +8,18 @@
                 <TH> Date de création </TH> 
                 <TH> Enseignant </TH> 
                 <TH> Difficulté </TH> 
+                <TH> Notions </TH> 
                 <TH> Choisir </TH> 
             </TR> 
         </thead>
         <tbody>
             <tr ng-repeat="i in qcmList.results.bindings">
                 <td >{{ i.name.value }}</td>
-                <td >{{ i.d8add.value }}</td>
+                <td >{{ i.d8add.value | date : "dd-MM-yy à h'h'mm"}}</td>
                 <td >{{ i.fname.value+" "+i.lname.value }}</td>
                 <td ><rating  max="5" readonly=true ng-model="i.difficulty.value" titles=""></rating></td>
-                <td ><center><button   ng-class=" i.qcmtry ? 'btn btn-warning' : 'btn btn-primary'" ng-click="setQcmInstance(i)">{{i.qcmtry?'Continuer':'Démarrer'}}</button></center></td>
+                <td ><center><button ng-class=" i.qcmtry ? 'btn btn-warning' : 'btn btn-primary'" ng-click="setQcmInstance(i)">Voir les notions</button></center></td>
+                <td ><center><button ng-class=" i.qcmtry ? 'btn btn-warning' : 'btn btn-primary'" ng-click="setQcmInstance(i)">{{i.qcmtry?'Continuer':'Démarrer'}}</button></center></td>
             </tr>
         </tbody>
     </table>

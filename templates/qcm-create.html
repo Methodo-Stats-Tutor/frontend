@@ -3,7 +3,7 @@
 <section data-ng-show="section===1">
     <button class="btn btn-primary" ng-click="goSection(2);" >Démarrer</button>
     <button class="btn btn-primary" ng-click="openContinue()" >Poursuivre</button>
-    <button class="btn btn-primary" ng-click="openReprendre()" >Reprendre</button>
+    <button class="btn btn-primary" ng-click="openReprendre()" >Réutiliser</button>
 </section>
 <!--SECTION 1-->
 <section data-ng-show="section===2">
@@ -53,8 +53,8 @@
 <section data-ng-show="section ===4">
     <div>
         <button  class="btn btn-primary" ng-click="newQuestion()" ng-disabled="form.$invalid">Nouvelle Question</button>
-        <button  class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save(false)" >Sauver l'avancement</button>
-        <button  class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save(true)">Sauver définitivement</button>
+        <button  class="btn btn-primary" ng-disabled="form.$invalid" ng-click="saveTemp()" >Sauver l'avancement</button>
+        <button  class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()">Valider les questions</button>
     </div>
     <ng-form name="form">
         <div ><h2 id="question" >Question n°{{qcm.questions[qcm.nbQ].rank}} : {{qcm.questions[qcm.nbQ].statement}}</h2>
@@ -136,18 +136,21 @@
 
 <!--NOTIONS-->
 <section data-ng-show="notions && section ===5">
-    TREAT
+    
+    Notions abordées: (utile pour la recherchede contenu de cours)
     <ul>
-        <li ng-show="row['TYP'].value==='traite'" ng-repeat="row in notions.results.bindings ">{{ row["NOTION"].value }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+        <li ng-repeat="row in notions.traite ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
     </ul>
-NEED
+Notions neccessaires: (un étudiant doit avoir acqui ces notions pour avoir accès à cet exercice)
     <ul>
-        <li ng-show="row['TYP'].value==='need'" ng-repeat="row in notions.results.bindings ">{{ row["NOTION"].value }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+        <li  ng-repeat="row in notions.need ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
     </ul>
-    GIVE
+    Notions acquises: (une fois l'exercice validé, l'étudiant aura acquis ces notions)
     <ul>
-        <li ng-show="row['TYP'].value==='give'" ng-repeat="row in notions.results.bindings ">{{ row["NOTION"].value }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+        <li  ng-repeat="row in notions.give ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
     </ul>
+
+        <button class="btn btn-default" type="button" ng-click="saveNotion()">Enregistrer le qcm</button>
 </section>
 <!--FIN NOTIONS-->
 
@@ -163,14 +166,14 @@ NEED
                 <TR> 
                     <TH> Nom </TH> 
                     <TH> Date de modification </TH> 
-                    <TH> Poursuivre </TH> 
+                    <TH> Réutiliser </TH> 
                 </TR> 
             </thead>
             <tbody>
                 <tr ng-repeat="i in items">
                     <td >{{ i.name.value }}</td>
                     <td >{{ i.d8Last.value  | date:'medium'}}</td>
-                    <td ><center><a href="#" ng-click="$event.preventDefault(); selected.item = i.qcm.value;ok()">Poursuivre...</a></center></td>
+                    <td ><center><a href="#" ng-click="$event.preventDefault(); selected.item = i.qcm.value;ok()">Réutiliser...</a></center></td>
 
                 </tr>
             </tbody>
