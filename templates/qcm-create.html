@@ -124,8 +124,6 @@
             <iframe iframe-onload="iframeLoadedCallBack()" id={{"iframe"+publiAnnot[$index].uid}} height={{pageHeight}} width=100% ng-show="ifsrc[$index]" ng-src="{{ifsrc[$index]}}"> </iframe>
         </div>
     </span>
-</section>
-<!--FIN SECTION 3-4-->
 <ul>
     <li ng-repeat="(k,v) in qcm.questions">
         {{k+":"+v}}{{v.rank=$index+1}}
@@ -133,8 +131,25 @@
         <button  class="btn btn-primary" ng-click="removeQuestion(v.rank,$index-1+1>0?$index-1+1:$index+1)" ng-disabled="$last&&$index===0"  ><span class="glyphicon glyphicon-circle-arrow-right">Supprimer {{$last}}</span></button>
         </li>
     </ul>
+</section>
+<!--FIN SECTION 3-4-->
 
-
+<!--NOTIONS-->
+<section data-ng-show="notions && section ===5">
+    TREAT
+    <ul>
+        <li ng-show="row['TYP'].value==='traite'" ng-repeat="row in notions.results.bindings ">{{ row["NOTION"].value }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+    </ul>
+NEED
+    <ul>
+        <li ng-show="row['TYP'].value==='need'" ng-repeat="row in notions.results.bindings ">{{ row["NOTION"].value }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+    </ul>
+    GIVE
+    <ul>
+        <li ng-show="row['TYP'].value==='give'" ng-repeat="row in notions.results.bindings ">{{ row["NOTION"].value }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+    </ul>
+</section>
+<!--FIN NOTIONS-->
 
 <!--TEMPLATES-->
 <script type="text/ng-template" id="continue.html">

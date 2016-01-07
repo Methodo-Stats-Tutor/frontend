@@ -328,7 +328,7 @@ app.controller('ModalInstanceTagsCtrl', function ($scope, $modalInstance, TupleR
     $scope.init = function(){
         $scope.treedata=[
             {
-                label: {value:"STATO"}, id:{value:"http://purl.obolibrary.org/obo/BFO_0000001"}, type: "folder", children: [{}]
+                label: {value:"MST"}, id:{value:"http://methodo-stats-tutor.com#ExternalConcept"}, type: "folder", children: [{}]
             }
 
         ];

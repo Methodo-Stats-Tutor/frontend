@@ -13,6 +13,11 @@ app.factory('QcmRestService',  function($http, ROOTS, Session) {
     dataFactory.updateQcm = function (qcm) {
         return $http.put(urlBase + '/qcm/' + qcm.uid,  qcm)
     };
+
+    dataFactory.getQcmNotion = function (qcm) {
+        return $http.get(urlBase + '/qcm/getQcmNotion/' + qcm.uid)
+    };
+
     dataFactory.correctQcmTry = function (qcmTry) {
         return $http.post(urlBase + "/correct/"+ qcmTry.uid, qcmTry);
     };
@@ -51,7 +56,7 @@ app.factory('QcmRestService',  function($http, ROOTS, Session) {
 
 //QCM CREATE
 app.controller('QcmCreateController', function($scope, $sce,$timeout, CourseMaterialRestService, annotsFactory, QcmRestService, ContentHeaderFactory, Session, $modal, MstUtils) {
-    $scope.headers = ["Configuration du qcm","Choix des documents","Édition des questions"];$scope.title = {title:"QCM",subtitle:"Créer"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
+    $scope.headers = ["Page des qcm","Configuration du qcm","Choix des documents","Édition des questions","Édition des notions"];$scope.title = {title:"QCM",subtitle:"Créer"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
     $scope.ifsrc = [];
     $scope.qcm = {
         userUid : Session.user.uid
@@ -63,34 +68,6 @@ app.controller('QcmCreateController', function($scope, $sce,$timeout, CourseMate
         $scope.qcm.nbQ = 0;
         $scope.qcm.questions = {};
         $scope.qcm.uid;
-        //$scope.qcm = {
-        //name: null,
-        //nbq:1
-        //author : "moi",
-        //difficulty : null,
-        //questions : {
-        //"1" :{
-        //courseMaterial:[],
-        //tags:["uri1","uri2"],
-        //choicezone:{
-        //"idc7a81689-c43b-4f64-81b5-57f6efc80fb5":{
-        //label:"",
-        //publipmid:"",
-        //publizonelabel:"",
-        //value:"",
-        //help:"",
-        //correction:""}
-        //},
-        //choicetext:{
-        //"":{label:""n
-        //value:true,
-        //help:"",
-        //correction:""
-        //}
-        //}
-        //}
-        //}
-        //};
     }
     $scope.init();
     $scope.hideIframe = function(idIframe){
@@ -151,14 +128,20 @@ app.controller('QcmCreateController', function($scope, $sce,$timeout, CourseMate
         $scope.section = 4;
         $scope.newQuestion();
     };
-
+$scope.notions;
     $scope.save = function(finished){
         $scope.qcm.finished = finished;
         if(!$scope.qcm.uid){
             console.log("save")
             QcmRestService.insertQcm($scope.qcm)
-            .success(function(data){ alert("Qcm enregistré avec succès")
+            .success(function(data){ //alert("Qcm enregistré avec succès")
                      $scope.qcm.uid = data.qcmUid;
+                     QcmRestService.getQcmNotion($scope.qcm)
+                     .success(function(data){ //on passe aux notions abordées par cet exercice
+                         $scope.section = 5;
+                         $scope.notions = data;
+                     })
+                     .error(function(error){alert("Une erreur est apparue"+error.message)});
             })
             .error(function(error){alert("Une erreur est apparue"+error.message)});
         }else{
@@ -201,7 +184,7 @@ app.controller('QcmCreateController', function($scope, $sce,$timeout, CourseMate
     $scope.iframeLoadedCallBack = function(){
         $timeout(function(){
             $scope.publiAnnot[$scope.publiAnnot.length-1].loaded=true;
-        document.getElementById("iframe"+$scope.publiAnnot[$scope.publiAnnot.length-1].uid).contentWindow.init(true,$scope.publiAnnot[$scope.publiAnnot.length-1].uid);
+            document.getElementById("iframe"+$scope.publiAnnot[$scope.publiAnnot.length-1].uid).contentWindow.init(true,$scope.publiAnnot[$scope.publiAnnot.length-1].uid);
             document.getElementById("iframe"+$scope.publiAnnot[$scope.publiAnnot.length-1].uid)
             .contentWindow
             .restoreAnnots(
@@ -477,9 +460,9 @@ app.controller('QcmTryController', function($scope, $sce,$timeout, CourseMateria
                 if(v.refersCourseMaterialUid === V.uid){
                     $("#box"+V.uid).show();
                     console.log("show iframe %s",V.uid);
-            document.getElementById( "iframe" + V.uid ).contentWindow.removeAllZones( );
-            document.getElementById( "iframe" + V.uid ).contentWindow.restoreAnnots( { annotator : V.annotatorJson, annotorious : V.annotoriousJson, zones : V.json }, "readonly" );
-            document.getElementById( "iframe" + V.uid ).contentWindow.removeZones( $scope.zoneForThisQuestionAndCM(V.uid) );
+                    document.getElementById( "iframe" + V.uid ).contentWindow.removeAllZones( );
+                    document.getElementById( "iframe" + V.uid ).contentWindow.restoreAnnots( { annotator : V.annotatorJson, annotorious : V.annotoriousJson, zones : V.json }, "readonly" );
+                    document.getElementById( "iframe" + V.uid ).contentWindow.removeZones( $scope.zoneForThisQuestionAndCM(V.uid) );
                 }
             })
         })
@@ -489,15 +472,15 @@ app.controller('QcmTryController', function($scope, $sce,$timeout, CourseMateria
         var pres = [];
         angular.forEach($scope.qcmData.referstopubliannot, function(V){//Pour toutes les zones...
             if(V.uid===uid)
-            $("#box"+V.uid).hide();
+                $("#box"+V.uid).hide();
             console.log("hide iframe %s",V.uid);
             angular.forEach($scope.NowQuestion.choicezone,     function(v){//Pour toutes les zones...
                 if(v.refersCourseMaterialUid === V.uid && V.uid === uid){
                     $("#box"+V.uid).show();
                     console.log("show iframe %s",V.uid);
-            document.getElementById( "iframe" + V.uid ).contentWindow.removeAllZones( );
-            document.getElementById( "iframe" + V.uid ).contentWindow.restoreAnnots( { annotator : V.annotatorJson, annotorious : V.annotoriousJson, zones : V.json }, "readonly" );
-            document.getElementById( "iframe" + V.uid ).contentWindow.removeZones( $scope.zoneForThisQuestionAndCM(V.uid) );
+                    document.getElementById( "iframe" + V.uid ).contentWindow.removeAllZones( );
+                    document.getElementById( "iframe" + V.uid ).contentWindow.restoreAnnots( { annotator : V.annotatorJson, annotorious : V.annotoriousJson, zones : V.json }, "readonly" );
+                    document.getElementById( "iframe" + V.uid ).contentWindow.removeZones( $scope.zoneForThisQuestionAndCM(V.uid) );
                 }
             })
         })
@@ -570,16 +553,6 @@ app.controller('QcmTryController', function($scope, $sce,$timeout, CourseMateria
         coursematerials:[],
         questions:[]
     };
-
-
-
-
-    //$scope.showZone = function(zoneDemande,idIframe){
-    //$('iframe').hide();//masque toutes les iframe
-    //$('#'+idIframe).show();//montre uniquement la bonne
-    //annotsFactory.showZone(zoneDemande,idIframe);
-    //};
-
 
 });
 
