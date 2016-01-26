@@ -52,12 +52,12 @@ Recherche :<input type="text" name="search" ng-minlength="3" ng-model="searchPat
         <p>
             <ul>
                 <li ng-repeat="(k,v) in lastClicked">{{v.label.value}}<button ng-click="deleteTag(k)">X</button>
-                    <select name="singleSelect" id="singleSelect" ng-model="v.accuracy" required>
-                        <option value="">---Adéquation du concept---</option> <!-- not selected / blank option -->
-                        <option value="0">Vague</option> 
-                        <option value="1">Claire</option> 
-                        <option value="2">Très claire</option>
-                    </select>
+                    <!--<select name="singleSelect" id="singleSelect" ng-model="v.accuracy" required>-->
+                        <!--<option value="">---Adéquation du concept---</option> [> not selected / blank option <]-->
+                        <!--<option value="0">Vague</option> -->
+                        <!--<option value="1">Claire</option> -->
+                        <!--<option value="2">Très claire</option>-->
+                    <!--</select>-->
                 </li>
             </ul>
         </p>

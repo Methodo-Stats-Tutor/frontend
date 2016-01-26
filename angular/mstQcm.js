@@ -38,6 +38,9 @@ app.factory('QcmRestService',  function($http, ROOTS, Session) {
         return $http.get(urlBase + "/qcmtrys/" + Session.user.uid);
     };
 
+    dataFactory.getQcmToDo = function () {
+        return $http.get(urlBase + "/qcmtodo/" + Session.user.uid);
+    };
     dataFactory.updateQcmTry = function (cust) {
         return $http.put(urlBase + '/qcmtry/' + cust.uid, cust)
     };
@@ -430,8 +433,6 @@ app.controller('QcmTryController', function($scope, $sce,$timeout, CourseMateria
     }
 
     $scope.stateChanged = function (qId) {
-
-        console.log("HAHAHA %o",qId);
         var name = $(qId).attr("name");
         $scope.qcmTry.result[$scope.qcmTry.nowRank].answers[name].value = !$scope.qcmTry.result[$scope.qcmTry.nowRank].answers[name].value;
         $scope.$apply();
@@ -553,7 +554,7 @@ app.controller('QcmTryController', function($scope, $sce,$timeout, CourseMateria
         $scope.hideCourseMaterials( );
     };
 
-    QcmRestService.getQcmTrys()
+    QcmRestService.getQcmToDo()
     .success(function(data){
         $scope.qcmList = data;
     });

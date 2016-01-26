@@ -383,6 +383,9 @@
                         <li class="header">HEADER</li>
                         <!-- Optionally, you can add icons to the links -->
                         <li class="active"><a href="#accueil"><i class='fa fa-dashboard'></i> <span>Accueil</span></a></li>
+                        <li class="treeview">
+                            <a href="#"><i class='fa fa-book'></i> <span> Admin </span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
                         <li class="treeview" ng-if="isAuthorized(userRoles.admin)">
                             <a href="#tripleStoreQuery"><i class='fa fa-table'></i> <span>Triple-Store</span></a>
                         </li>
@@ -390,8 +393,10 @@
                         <li class="treeview" ng-if="isAuthorized(userRoles.admin)">
                             <a href="#ontologyQuery"><i class='fa fa-table'></i> <span>Ontologie</span></a>
                         </li>
+                        </ul>
+                        </li>
                         <li class="treeview">
-                            <a href="#"><i class='fa fa-book'></i> <span>Cours</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <a href="#"><i class='fa fa-book'></i> <span> Cours </span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
                                 <li>
                                     <a href="#"><i class="fa fa-circle-o"></i> Proposer <i class="fa fa-angle-left pull-right"></i></a>
@@ -437,8 +442,7 @@
                                 </li>
                                 <li><a href="#"><i class="fa fa-circle-o"></i> S'entrainer <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
-                                        <li><a href="#qcmTry"><i class="fa fa-circle-o"></i> QCM <i class="fa fa-angle-left pull-right"></i></a>
-                                        </li>
+                                        <li><a href="#qcmTry"><i class="fa fa-circle-o"></i> QCM <i class="fa fa-angle-left pull-right"></i></a> </li>
                                         <li><a href="#ocpu"><i class="fa fa-circle-o"></i> Stats </a></li>
                                     </ul>
                                 </li>

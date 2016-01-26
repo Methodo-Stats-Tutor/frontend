@@ -158,6 +158,10 @@ mstApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'templates/profile.html',
         controller: 'ProfileController'
     }).
+        when('/exerciceToDo', {
+        templateUrl: 'templates/exercice-to-do.html',
+        controller: 'ExerciceToDoController'
+    }).
         otherwise({
         redirectTo: '/login'
     });
