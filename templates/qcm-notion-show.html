@@ -1,0 +1,39 @@
+
+
+    <div class="modal-header">
+        <h3 class="modal-title">Liste des annotations validées</h3>
+    </div>
+    <div class="modal-body">
+
+   
+  
+
+<!--{{treedata}}-->
+
+    <!--{{dataNotion.results.bindings}}-->
+
+        <h4> Selection :</h4>
+            <div class="col-md-4">
+                Notions necessaires :
+                <ul>
+                    <li ng-repeat="(k,v) in dataNotion.results.bindings" ng-if="v.TYP.value==='need'">{{v.NOTIONLAB.value}} </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+Notions traitées :
+                <ul>
+                    <li ng-repeat="(k,v) in dataNotion.results.bindings" ng-if="v.TYP.value==='traite'">{{v.NOTIONLAB.value}} </li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                Notions débloquées :
+                <ul>
+                    <li ng-repeat="(k,v) in dataNotion.results.bindings" ng-if="v.TYP.value==='give'">{{v.NOTIONLAB.value}} </li>
+                </ul>
+            </div>
+</div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="ok()" ng-disabled="form2.$invalid">Ok</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Annuler</button>
+    </div>

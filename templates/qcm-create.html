@@ -137,17 +137,17 @@
 <!--NOTIONS-->
 <section data-ng-show="notions && section ===5">
     
-    Notions abordées: (utile pour la recherchede contenu de cours)
+    Notions abordées: (utile pour la recherchede contenu de cours)<button class="btn btn-primary">Ajouter</button>
     <ul>
-        <li ng-repeat="row in notions.traite ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+        <li ng-repeat="row in notions.traite ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}<button class="btn btn-danger" ng-click="">X</button></li>
     </ul>
-Notions neccessaires: (un étudiant doit avoir acqui ces notions pour avoir accès à cet exercice)
+Notions neccessaires: (un étudiant doit avoir acqui ces notions pour avoir accès à cet exercice)<button class="btn btn-primary">Ajouter</button>
     <ul>
-        <li  ng-repeat="row in notions.need ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+        <li  ng-repeat="row in notions.need ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}<button class="btn btn-danger">X</button></li>
     </ul>
-    Notions acquises: (une fois l'exercice validé, l'étudiant aura acquis ces notions)
+    Notions acquises: (une fois l'exercice validé, l'étudiant aura acquis ces notions)<button class="btn btn-primary">Ajouter</button>
     <ul>
-        <li  ng-repeat="row in notions.give ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}</li>
+        <li  ng-repeat="row in notions.give ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}<button class="btn btn-danger">X</button></li>
     </ul>
 
         <button class="btn btn-default" type="button" ng-click="saveNotion()">Enregistrer le qcm</button>
