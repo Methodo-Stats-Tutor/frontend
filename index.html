@@ -340,6 +340,9 @@
                                         <div class="pull-left">
                                             <a href="#profile" class="btn btn-default btn-flat">Profile</a>
                                         </div>
+                                        <div class="pull-left" ng-if="isAuthorized(userRoles.admin)" >
+                                            <a href="#admin" class="btn btn-default btn-flat">Administration</a>
+                                        </div>
                                         <div class="pull-right">
                                             <a ng-controller="IdentController" href ng-click="logout()" class="btn btn-default btn-flat">Sign out</a>
                                         </div>
@@ -383,7 +386,7 @@
                         <li class="header">HEADER</li>
                         <!-- Optionally, you can add icons to the links -->
                         <li class="active"><a href="#accueil"><i class='fa fa-dashboard'></i> <span>Accueil</span></a></li>
-                        <li class="treeview">
+                        <li class="treeview" ng-if="isAuthorized(userRoles.admin)">
                             <a href="#"><i class='fa fa-book'></i> <span> Admin </span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
                         <li class="treeview" ng-if="isAuthorized(userRoles.admin)">

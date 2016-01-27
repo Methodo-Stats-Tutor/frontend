@@ -56,6 +56,17 @@ app.factory('UserRestService',  function($http, ROOTS, Session) {
     return dataFactory;
 });
 
+app.factory('AdminRestService',  function($http, ROOTS, Session) {
+    var dataFactory = {};
+    var urlBase = ROOTS.webServices + '/rest';
+    var encodedString = Session.getEncodedStringForBasicAuth();
+
+    dataFactory.refreshOnto = function ( data) {
+        return $http.get(urlBase + "/admin/refreshonto/");
+    };
+
+    return dataFactory;
+});
 //rest API
 app.factory('TupleRestService',  function($http, ROOTS, Session) {
     var dataFactory = {};
@@ -102,6 +113,7 @@ mstApp.run(function ($rootScope, AUTH_EVENTS, AuthService) {
     });
 });
 
+//Gestion des routes pour les pages
 mstApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/accueil', {
@@ -158,9 +170,9 @@ mstApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'templates/profile.html',
         controller: 'ProfileController'
     }).
-        when('/exerciceToDo', {
-        templateUrl: 'templates/exercice-to-do.html',
-        controller: 'ExerciceToDoController'
+        when('/admin', {
+        templateUrl: 'templates/admin.html',
+        controller: 'AdminController'
     }).
         otherwise({
         redirectTo: '/login'
@@ -619,4 +631,17 @@ mstApp.controller('ProfileController', function($scope,$rootScope,$http,$sce,$wi
         .error(function(data){alert(data)})
     }
 
+});
+//ADMIN
+mstApp.controller('AdminController', function($scope,$rootScope,$http,$sce,$window, AdminRestService, annotsFactory, ContentHeaderFactory,Session) {
+    $scope.headers = ["Administration"];$scope.title = {title:"Gestion",subtitle:"du site"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
+    $scope.profile = Session.user;
+
+    $scope.refreshOnto = function(){
+        AdminRestService.refreshOnto($scope.profile)
+        .success(function(data){
+            alert("Ontologie chargée");
+        })
+        .error(function(data){alert("Erreur lors du chargement:"+data)})
+    }
 });
