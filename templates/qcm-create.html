@@ -54,7 +54,7 @@
     <div>
         <button  class="btn btn-primary" ng-click="newQuestion()" ng-disabled="form.$invalid">Nouvelle Question</button>
         <button  class="btn btn-primary" ng-disabled="form.$invalid" ng-click="saveTemp()" >Sauver l'avancement</button>
-        <button  class="btn btn-primary" ng-disabled="form.$invalid" ng-click="save()">Valider les questions</button>
+        <button  class="btn btn-primary" ng-disabled="form.$invalid && qcm.nbQ > 0" ng-click="save()">Valider les questions</button>
     </div>
     <ng-form name="form">
         <div ><h2 id="question" >Question n°{{qcm.questions[qcm.nbQ].rank}} : {{qcm.questions[qcm.nbQ].statement}}</h2>
@@ -136,18 +136,17 @@
 
 <!--NOTIONS-->
 <section data-ng-show="notions && section ===5">
-    
-    Notions abordées: (utile pour la recherchede contenu de cours)<button class="btn btn-primary">Ajouter</button>
+    Notions abordées: (utile pour la recherchede contenu de cours)<button class="btn btn-primary" ng-click="openTags('traite')">Ajouter</button>
     <ul>
-        <li ng-repeat="row in notions.traite ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}<button class="btn btn-danger" ng-click="">X</button></li>
+        <li ng-repeat="(key,row) in notions.traite ">{{ row.NOTIONLAB.value }}<button class="btn btn-danger" ng-click="removeNotion('traite',key)">X</button></li>
     </ul>
-Notions neccessaires: (un étudiant doit avoir acqui ces notions pour avoir accès à cet exercice)<button class="btn btn-primary">Ajouter</button>
+Notions neccessaires: (un étudiant doit avoir acqui ces notions pour avoir accès à cet exercice)<button class="btn btn-primary" ng-click="openTags('need')">Ajouter</button>
     <ul>
-        <li  ng-repeat="row in notions.need ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}<button class="btn btn-danger">X</button></li>
+        <li  ng-repeat="(key,row) in notions.need ">{{ row.NOTIONLAB.value }}<button class="btn btn-danger" ng-click="removeNotion('need',key)">X</button></li>
     </ul>
-    Notions acquises: (une fois l'exercice validé, l'étudiant aura acquis ces notions)<button class="btn btn-primary">Ajouter</button>
+    Notions acquises: (une fois l'exercice validé, l'étudiant aura acquis ces notions)<button class="btn btn-primary" ng-click="openTags('give')">Ajouter</button>
     <ul>
-        <li  ng-repeat="row in notions.give ">{{ row }} {{ row["NOTIONLAB"].value }} {{ row["NOTIONCOMM"].value }}<button class="btn btn-danger">X</button></li>
+        <li  ng-repeat="(key,row) in notions.give ">{{ row.NOTIONLAB.value }}<button class="btn btn-danger" ng-click="removeNotion('give',key)">X</button></li>
     </ul>
 
         <button class="btn btn-default" type="button" ng-click="saveNotion()">Enregistrer le qcm</button>

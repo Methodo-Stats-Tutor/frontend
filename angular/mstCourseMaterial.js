@@ -408,11 +408,10 @@ app.controller('ModalInstanceTagsCtrl', function ($scope, $modalInstance, TupleR
     $scope.ok = function () {
         $modalInstance.close($scope.lastClicked);
     };
-
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-            $scope.deleteTag = function(key){
-            delete($scope.lastClicked[key]);
-        }
+    $scope.deleteTag = function(key){
+        delete($scope.lastClicked[key]);
+    }
 });

@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h3 class="modal-title">Historique des tentatives</h3>
+</div>
+<div class="modal-body">
+    <table  datatable="ng"  class="table table-bordered table-striped">
+        <thead>
+            <TR> 
+                <TH> Date </TH> 
+                <TH> Note </TH> 
+                <TH> Statut </TH> 
+            </TR> 
+        </thead>
+        <tbody>
+            <tr ng-repeat="i in data.results.bindings">
+                <td >{{ i.d8last.value | date : "dd-MM-yy à h'h'mm"}}</td>
+                <td >{{ i.mark.value + "/20" }}</td>
+                <td>{{ i.validated.value? 'Validé' : 'Non validé' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Annuler</button>
+</div>

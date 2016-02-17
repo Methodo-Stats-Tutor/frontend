@@ -76,6 +76,11 @@ app.factory('TupleRestService',  function($http, ROOTS, Session) {
     dataFactory.getTupleRestServices = function () {
         return $http.get(urlBase + "/tuples/");
     };
+
+    dataFactory.getOntoDetails = function (uri) {
+        console.log(uri);
+        return $http.get(urlBase + "/tuples/getOntoDetails/"+uri.replace(/.*?#(.*)$/g, "$1"));
+    };
     dataFactory.getQuery = function (query) {
         return $http.post(urlBase + "/tuples/getQuery/",query);
     };
