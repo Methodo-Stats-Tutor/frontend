@@ -300,7 +300,7 @@ mstApp.controller("TripleStoreController", function($scope, TupleRestService, Co
 
 mstApp.controller("TripleStoreQueryController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
     $scope.headers = ["Triple Store"];$scope.title = {title:"Triple Store",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);
-    $scope.query ="PREFIX mst: <http://methodo-stats-tutor.com#>\nSELECT * \n{?subject ?predicat ?object}"
+    $scope.query ="PREFIX mst: <http://methodo-stats-tutor.com#>\nPREFIX text: <http://jena.apache.org/text#>\n PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \nSELECT * \n{?subject ?predicat ?object}"
     $scope.error;
     $scope.getQuery = function(){
         TupleRestService.getQuery($scope.query)
