@@ -78,9 +78,13 @@ app.factory('TupleRestService',  function($http, ROOTS, Session) {
     };
 
     dataFactory.getOntoDetails = function (uri) {
-        console.log(uri);
         return $http.get(urlBase + "/tuples/getOntoDetails/"+uri.replace(/.*?#(.*)$/g, "$1"));
     };
+
+    dataFactory.getOntoCytoGraph = function (usrId) {
+        return $http.get(urlBase + "/tuples/getOntoCytoGraph/"+usrId);
+    };
+
     dataFactory.getQuery = function (query) {
         return $http.post(urlBase + "/tuples/getQuery/",query);
     };
@@ -125,6 +129,10 @@ mstApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'templates/accueil.html',
         controller: 'AccueilController'
     }).
+        when('/conceptCloud', {
+        templateUrl: 'templates/concept-cloud.html',
+        controller: 'ConceptCloudController'
+    }).
         when('/TripleStore', {
         templateUrl: 'templates/triple-store.html',
         controller: 'TripleStoreController'
@@ -148,6 +156,10 @@ mstApp.config(['$routeProvider', function($routeProvider) {
         when('/documentAnnot', {
         templateUrl: 'templates/document-annot.html',
         controller: 'DocumentAnnotController'
+    }).
+        when('/documentSearch', {
+        templateUrl: 'templates/document-search.html',
+        controller: 'DocumentSearchController'
     }).
         when('/qcmCreate', {
         templateUrl: 'templates/qcm-create.html',
@@ -271,6 +283,45 @@ mstApp.controller('AccueilController', function($scope, $window,  ContentHeaderF
 
 });
 
+
+mstApp.controller('ConceptCloudController', function($scope, $window,  ContentHeaderFactory, TupleRestService, Session) {
+    $scope.headers = ["Choux-Fleur"];$scope.title = {title:"",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
+    $scope.init = function(){
+    };
+    $scope.init();
+
+    $scope.label ;
+    $scope.comment;
+    $scope.infoConcept = function(uri){
+TupleRestService.getOntoDetails(uri)
+        .success( function(data) {
+            if(data.results.bindings[0]){
+                $scope.label = data.results.bindings[0].NOTIONLAB.value;
+                $scope.comment = data.results.bindings[0].NOTIONCOMM.value;
+            }
+        });
+    $scope.$apply();
+    };
+
+    $scope.getToto = function(){
+        TupleRestService.getOntoCytoGraph(Session.user.uid)
+        .success(function(data){
+            return(data);
+            //document.getElementById("cyto").contentWindow.voieLactee( $scope.theUI); 
+            //document.getElementById("cyto").contentWindow.addData( data.elements ); 
+        })
+    };
+    
+    $scope.iframeLoadedCallBack = function(){
+        $scope.$apply(function(){
+        TupleRestService.getOntoCytoGraph(Session.user.uid)
+        .success(function(data){
+           // document.getElementById("cyto").contentWindow.addData( data.elements ); 
+        });
+        });
+
+    };
+});
 
 mstApp.directive('contentHeader',function(){
     return {

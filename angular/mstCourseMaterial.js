@@ -415,3 +415,12 @@ app.controller('ModalInstanceTagsCtrl', function ($scope, $modalInstance, TupleR
         delete($scope.lastClicked[key]);
     }
 });
+
+app.controller('DocumentSearchController', function($scope,$rootScope,$http,$sce,$window,$timeout, CourseMaterialRestService, annotsFactory, ContentHeaderFactory, MstUtils, $modal, $log) {
+
+    $scope.headers = ["Choix de la publication","Annotation"];$scope.title = {title:"Publications",subtitle:"Annoter"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
+    $scope.$watch(function(){ return $scope.section; },function(id){ if(id===1){$scope.init()} });
+    $scope.init = function(){
+        console.log("init");
+    }
+});

@@ -374,18 +374,19 @@
                         </div>
                     </div>
                     <!-- search form -->
-                    <form action="#" method="get" class="sidebar-form">
-                        <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="Search..."/>
-                            <span class="input-group-btn"> <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button> </span>
-                        </div>
-                    </form>
+                    <!--<form action="#" method="get" class="sidebar-form">-->
+                        <!--<div class="input-group">-->
+                            <!--<input type="text" name="q" class="form-control" placeholder="Search..."/>-->
+                            <!--<span class="input-group-btn"> <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button> </span>-->
+                        <!--</div>-->
+                    <!--</form>-->
                     <!-- /.search form -->
                     <!-- Sidebar Menu -->
                     <ul class="sidebar-menu">
-                        <li class="header">HEADER</li>
+                        <!--<li class="header">HEADER</li>-->
                         <!-- Optionally, you can add icons to the links -->
-                        <li class="active"><a href="#accueil"><i class='fa fa-dashboard'></i> <span>Accueil</span></a></li>
+                        <li class="active"><a href="#accueil"><i class='fa fa-dashboard'></i> <span> Accueil </span></a></li>
+                        <li class="active"><a href="#conceptCloud"><i class='fa fa-dashboard'></i> <span> Nuage des Concepts </span></a></li>
                         <li class="treeview" ng-if="isAuthorized(userRoles.admin)">
                             <a href="#"><i class='fa fa-book'></i> <span> Admin </span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
@@ -423,15 +424,16 @@
                             <a href="#"><i class='fa fa-book'></i> <span>Documents</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
 
-                                <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)"><a href="#documentUpload"><i class="fa fa-circle-o"></i> Charger</a></li>
-                                <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)" ><a href="#documentAnnot"><i class="fa fa-circle-o"></i> Annoter</a></li>
-                                <li ng-if="true" ><a href="#publiBrowse"><i class="fa fa-circle-o"></i> Parcourir </a>
+                                <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)"><a href="#documentUpload"><i class="fa fa-circle-o"></i> Charger </a></li>
+                                <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)" ><a href="#documentAnnot"><i class="fa fa-circle-o"></i> Annoter </a></li>
+                                <!--<li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)" ><a href="#documentSearch"><i class="fa fa-circle-o"></i> Rechercher </a></li>-->
+                                <!--<li ng-if="true" ><a href="#publiBrowse"><i class="fa fa-circle-o"></i> Rechercher </a>-->
 
-                                    <ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Publications </a></li> </ul>
-                                    <ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Livres </a></li> </ul>
-                                    <ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Images </a></li> </ul>
-                                    <ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Vidéos </a></li> </ul>
-                                </li>
+                                    <!--<ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Publications </a></li> </ul>-->
+                                    <!--<ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Livres </a></li> </ul>-->
+                                    <!--<ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Images </a></li> </ul>-->
+                                    <!--<ul class="treeview-menu"> <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)||isAuthorized(userRoles.student)||isAuthorized(userRoles.guest)" ><a href="#publiAnnot"><i class="fa fa-circle-o"></i> Vidéos </a></li> </ul>-->
+                                <!--</li>-->
                             </ul>
                         </li>
                         <li class="treeview">
@@ -439,13 +441,13 @@
                             <ul class="treeview-menu">
                                 <li ng-if="isAuthorized(userRoles.admin)||isAuthorized(userRoles.teacher)"><a href="#"><i class="fa fa-circle-o"></i> Proposer <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
-                                        <li><a href="#qcmCreate"><i class="fa fa-circle-o"></i> QCM </a></li>
+                                        <li><a href="#qcmCreate"><i class="fa fa-circle-o"></i> Épreuve </a></li>
                                         <li><a href="#"><i class="fa fa-circle-o"></i> Stats </a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#"><i class="fa fa-circle-o"></i> S'entrainer <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
-                                        <li><a href="#qcmTry"><i class="fa fa-circle-o"></i> QCM <i class="fa fa-angle-left pull-right"></i></a> </li>
+                                        <li><a href="#qcmTry"><i class="fa fa-circle-o"></i> Épreuve <i class="fa fa-angle-left pull-right"></i></a> </li>
                                         <li><a href="#ocpu"><i class="fa fa-circle-o"></i> Stats </a></li>
                                     </ul>
                                 </li>
