@@ -1,4 +1,4 @@
-var app = angular.module('mstCourseMaterial', []);
+var app = angular.module('mstrCourseMaterial', []);
 //rest API
 app.factory('CourseMaterialRestService', function($http, ROOTS, Session) {
 
@@ -328,7 +328,7 @@ app.controller('ModalInstanceTagsCtrl', function ($scope, $modalInstance, TupleR
     $scope.init = function(){
         $scope.treedata=[
             {
-                label: {value:"MST"}, id:{value:"http://methodo-stats-tutor.com#ExternalConcept"}, type: "folder", children: [{}]
+                label: {value:"MST"}, id:{value:"http://methodo-stat-tutor.com#ExternalConcept"}, type: "folder", children: [{}]
             }
 
         ];

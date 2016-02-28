@@ -1,4 +1,4 @@
-var app = angular.module('mstQcm', []);
+var app = angular.module('mstrQcm', []);
 
 app.factory('QcmRestService',  function($http, ROOTS, Session) {
 

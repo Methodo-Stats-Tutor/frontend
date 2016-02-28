@@ -8,12 +8,12 @@
 <body onload="setSize();"> 
 
 <canvas id="sitemap" name="sitemap"  style="background-color:#FFFFFF;"></canvas>
-<script src="/mst/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="/mstr/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 
-<script src="/mst/js/ext/arbor/arbor.js" type="text/javascript"></script>
-<script src="/mst/js/ext/arbor/arbor-tween.js" type="text/javascript"></script>
-<script src="/mst/js/ext/arbor/arbor-graphics.js" type="text/javascript"></script>
-<script src="/mst/js/ext/arbor/site.js" type="text/javascript"></script>
+<script src="/mstr/js/ext/arbor/arbor.js" type="text/javascript"></script>
+<script src="/mstr/js/ext/arbor/arbor-tween.js" type="text/javascript"></script>
+<script src="/mstr/js/ext/arbor/arbor-graphics.js" type="text/javascript"></script>
+<script src="/mstr/js/ext/arbor/site.js" type="text/javascript"></script>
 <script>
 
 setSize = function(){

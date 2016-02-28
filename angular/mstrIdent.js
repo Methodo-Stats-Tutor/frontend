@@ -1,5 +1,5 @@
 
-var app = angular.module('mstIdent', []);
+var app = angular.module('mstrIdent', []);
 
 
 app.controller('IdentController', function($scope, $rootScope,  $sce,$window,$location,AUTH_EVENTS, AuthService) {

@@ -1,7 +1,7 @@
 //Define an angular module for our app
-var mstApp = angular.module('mstAPP', ['ngRoute','ngResource','ngSanitize','angularFileUpload','doubleScrollBars','ngPostMessage','datatables','angular.filter','mstIdent','mstQcm','mstUtils','mstCourseMaterial','ui.bootstrap','colorpicker.module','treeControl','mstConstant']);
+var mstrApp = angular.module('mstrAPP', ['ngRoute','ngResource','ngSanitize','angularFileUpload','doubleScrollBars','ngPostMessage','datatables','angular.filter','mstrIdent','mstrQcm','mstrUtils','mstrCourseMaterial','ui.bootstrap','colorpicker.module','treeControl','mstrConstant']);
 
-mstApp.controller('ApplicationController', function ($scope, USER_ROLES, AuthService, $window, UserRestService,Session) {
+mstrApp.controller('ApplicationController', function ($scope, USER_ROLES, AuthService, $window, UserRestService,Session) {
     $scope.currentUser = null;
     $scope.isConnected = null;
     $scope.userRoles = USER_ROLES;
@@ -18,7 +18,7 @@ mstApp.controller('ApplicationController', function ($scope, USER_ROLES, AuthSer
 });
 
 
-mstApp.service('translationService', function($resource) {     
+mstrApp.service('translationService', function($resource) {     
 
     this.getTranslation = function ($scope, language, page) {
         var path = 'templates/translation.json';
@@ -106,7 +106,7 @@ app.factory('TupleRestService',  function($http, ROOTS, Session) {
     return dataFactory;
 });
 
-mstApp.run(function ($rootScope, AUTH_EVENTS, AuthService) {
+mstrApp.run(function ($rootScope, AUTH_EVENTS, AuthService) {
     $rootScope.$on('$stateChangeStart', function (event, next) {
         var authorizedRoles = next.data.authorizedRoles;
         if (!AuthService.isAuthorized(authorizedRoles)) {
@@ -123,7 +123,7 @@ mstApp.run(function ($rootScope, AUTH_EVENTS, AuthService) {
 });
 
 //Gestion des routes pour les pages
-mstApp.config(['$routeProvider', function($routeProvider) {
+mstrApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/accueil', {
         templateUrl: 'templates/accueil.html',
@@ -197,12 +197,12 @@ mstApp.config(['$routeProvider', function($routeProvider) {
 }]);
 
 //Define Routing for app
-mstApp.config(['$httpProvider', function($httpProvider) {
+mstrApp.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
 
-mstApp.controller('AccueilController', function($scope, $window,  ContentHeaderFactory) {
+mstrApp.controller('AccueilController', function($scope, $window,  ContentHeaderFactory) {
     $scope.headers = ["Choux-Fleur"];$scope.title = {title:"",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
     var CLR = {
         branch:"violet",
@@ -217,27 +217,27 @@ mstApp.controller('AccueilController', function($scope, $window,  ContentHeaderF
         {
         nodes:{
             "Méthodo-Stats<br>TUTOR":{color:"grey", shape:"dot", alpha:1}, 
-            "À Propos":{color:"grey",  alpha:0, link:"/mst/#/profile"}, 
+            "À Propos":{color:"grey",  alpha:0, link:"/mstr/#/profile"}, 
 
             "Partie<br>Admin":{color:CLR.violet, shape:"dot", alpha:1},
-            "Triple Store":{color:CLR.violet,  alpha:0, link:"/mst/#/tripleStoreQuery"}, 
+            "Triple Store":{color:CLR.violet,  alpha:0, link:"/mstr/#/tripleStoreQuery"}, 
 
             "Mes Infos":{color:CLR.blue, shape:"dot", alpha:1},
-            "Mon Profil":{color:CLR.blue,  alpha:0, link:"/mst/#/profile"}, 
-            "Mes Notes":{color:CLR.blue,  alpha:0, link:"/mst/#/profile"}, 
+            "Mon Profil":{color:CLR.blue,  alpha:0, link:"/mstr/#/profile"}, 
+            "Mes Notes":{color:CLR.blue,  alpha:0, link:"/mstr/#/profile"}, 
 
             "Documents":{color:CLR.green, shape:"dot", alpha:1},
-            "Charger":{color:CLR.green, alpha:0, link:'/mst/#/documentUpload'},
-            "Annoter":{color:CLR.green, alpha:0, link:'/mst/#/documentAnnot'},
-            "Parcourir":{color:CLR.green, alpha:0, link:'/mst/#/documentBrowse'},
+            "Charger":{color:CLR.green, alpha:0, link:'/mstr/#/documentUpload'},
+            "Annoter":{color:CLR.green, alpha:0, link:'/mstr/#/documentAnnot'},
+            "Parcourir":{color:CLR.green, alpha:0, link:'/mstr/#/documentBrowse'},
 
             "Exercices":{color:CLR.red, shape:"dot", alpha:1}, 
-            "Proposer":{color:CLR.red, alpha:0, link:'/mst/#qcmCreate'},
-            "S'entrainer":{color:CLR.red, alpha:0, link:'/mst/#qcmTry'},
+            "Proposer":{color:CLR.red, alpha:0, link:'/mstr/#qcmCreate'},
+            "S'entrainer":{color:CLR.red, alpha:0, link:'/mstr/#qcmTry'},
 
             "Ontologie":{color:CLR.orange, shape:"dot", alpha:1}, 
-            "Parcourir ":{color:CLR.orange, alpha:0, link:'/mst/#ontologyTree'},
-            "Éditer":{color:CLR.orange, alpha:0, link:'/mst/#qcmTry'}
+            "Parcourir ":{color:CLR.orange, alpha:0, link:'/mstr/#ontologyTree'},
+            "Éditer":{color:CLR.orange, alpha:0, link:'/mstr/#qcmTry'}
         },
         edges:{
             "Méthodo-Stats<br>TUTOR":{
@@ -284,7 +284,7 @@ mstApp.controller('AccueilController', function($scope, $window,  ContentHeaderF
 });
 
 
-mstApp.controller('ConceptCloudController', function($scope, $window,  ContentHeaderFactory, TupleRestService, Session) {
+mstrApp.controller('ConceptCloudController', function($scope, $window,  ContentHeaderFactory, TupleRestService, Session) {
     $scope.headers = ["Choux-Fleur"];$scope.title = {title:"",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
     $scope.init = function(){
     };
@@ -323,7 +323,7 @@ TupleRestService.getOntoDetails(uri)
     };
 });
 
-mstApp.directive('contentHeader',function(){
+mstrApp.directive('contentHeader',function(){
     return {
         restrict: 'E',
         templateUrl: 'templates/content-header.html',
@@ -339,7 +339,7 @@ mstApp.directive('contentHeader',function(){
 });
 
 
-mstApp.controller("TripleStoreController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
+mstrApp.controller("TripleStoreController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
     $scope.headers = ["Triple Store"];$scope.title = {title:"Triple Store",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);
 
 
@@ -349,9 +349,9 @@ mstApp.controller("TripleStoreController", function($scope, TupleRestService, Co
     });
 });
 
-mstApp.controller("TripleStoreQueryController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
+mstrApp.controller("TripleStoreQueryController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
     $scope.headers = ["Triple Store"];$scope.title = {title:"Triple Store",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);
-    $scope.query ="PREFIX mst: <http://methodo-stats-tutor.com#>\nPREFIX text: <http://jena.apache.org/text#>\n PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \nSELECT * \n{?subject ?predicat ?object}"
+    $scope.query ="PREFIX mstr: <http://methodo-stat-tutor.com#>\nPREFIX text: <http://jena.apache.org/text#>\n PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \nSELECT * \n{?subject ?predicat ?object}"
     $scope.error;
     $scope.getQuery = function(){
         TupleRestService.getQuery($scope.query)
@@ -367,7 +367,7 @@ mstApp.controller("TripleStoreQueryController", function($scope, TupleRestServic
     }
 });
 
-mstApp.controller("OntologyController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
+mstrApp.controller("OntologyController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
     $scope.headers = ["Triple Store"];$scope.title = {title:"Triple Store",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);
     $scope.query ="PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT * \n{?subject ?predicat ?object}"
     $scope.error;
@@ -385,7 +385,7 @@ mstApp.controller("OntologyController", function($scope, TupleRestService, Conte
     }
 });
 
-mstApp.controller("OntologyTreeController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
+mstrApp.controller("OntologyTreeController", function($scope, TupleRestService, ContentHeaderFactory, Session, AuthService,ContentHeaderFactory) {
     $scope.headers = ["Triple Store"];$scope.title = {title:"Triple Store",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);
     $scope.init = function(){
         $scope.treedata=[
@@ -469,7 +469,7 @@ mstApp.controller("OntologyTreeController", function($scope, TupleRestService, C
         }
     }
 });
-mstApp.controller("ContentHeaderController", function($scope, ContentHeaderFactory) {
+mstrApp.controller("ContentHeaderController", function($scope, ContentHeaderFactory) {
     $scope.subMenus;
     $scope.titles;
     $scope.setCurrentIndex = function(id){
@@ -489,7 +489,7 @@ mstApp.controller("ContentHeaderController", function($scope, ContentHeaderFacto
     }); 
 });
 
-mstApp.factory( 'ContentHeaderFactory', function() {
+mstrApp.factory( 'ContentHeaderFactory', function() {
     var subMenus = [];
     var titles= {};
     var index =1;
@@ -504,7 +504,7 @@ mstApp.factory( 'ContentHeaderFactory', function() {
 });
 
 //OCPU
-mstApp.controller('DocumentUploadController', function($scope, FileUploader,ContentHeaderFactory, ROOTS, Session,translationService) {
+mstrApp.controller('DocumentUploadController', function($scope, FileUploader,ContentHeaderFactory, ROOTS, Session,translationService) {
     $scope.headers = ["Chargement"];$scope.pagetitle = {title:"Publications",subtitle:"Charger"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.pagetitle);ContentHeaderFactory.setCurrentIndex(1);
     translationService.getTranslation($scope, "fr","document-upload");  
     ocpu.seturl(ROOTS.ocpu + "/library/Pubmed4URCPO/R")
@@ -571,7 +571,7 @@ mstApp.controller('DocumentUploadController', function($scope, FileUploader,Cont
 });
 
 //calls R function: stats::rnorm(n=100, mean=runif(1)):
-mstApp.controller('OcpuTestPlotController', function($scope,ContentHeaderFactory,ROOTS) {
+mstrApp.controller('OcpuTestPlotController', function($scope,ContentHeaderFactory,ROOTS) {
 
     $scope.headers = ["Choix"];$scope.title = {title:"Exercice",subtitle:"Stats"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
 
@@ -588,7 +588,7 @@ mstApp.controller('OcpuTestPlotController', function($scope,ContentHeaderFactory
     };
 });
 
-mstApp.filter('nullFilter', function() {
+mstrApp.filter('nullFilter', function() {
     return function(num) {
         if(num) return num;
     };
@@ -620,7 +620,7 @@ app.factory('annotsFactory', ['$rootScope', function ($rootScope) {
     }
 }]);
 
-mstApp.directive('iframeOnload', [function(){
+mstrApp.directive('iframeOnload', [function(){
     return {
         scope: {
             callBack: '&iframeOnload'
@@ -633,14 +633,14 @@ mstApp.directive('iframeOnload', [function(){
     }
 }]);
 
-mstApp.controller('IndexHeaderController', function($scope,  AuthService) {
+mstrApp.controller('IndexHeaderController', function($scope,  AuthService) {
 });
 
-mstApp.controller('IndexLeftSideBarController', function($scope,  AuthService) {
+mstrApp.controller('IndexLeftSideBarController', function($scope,  AuthService) {
 });
 
 
-mstApp.factory('httpErrorResponseInterceptor', ['$q', '$location',
+mstrApp.factory('httpErrorResponseInterceptor', ['$q', '$location',
                function($q, $location) {
                    return {
                        response: function(responseData) {
@@ -668,14 +668,14 @@ mstApp.factory('httpErrorResponseInterceptor', ['$q', '$location',
 ]);
 
 //Http Intercpetor to check auth failures for xhr requests
-mstApp.config(['$httpProvider',
+mstrApp.config(['$httpProvider',
               function($httpProvider) {
                   $httpProvider.interceptors.push('httpErrorResponseInterceptor');
               }
 ]);
 
 //PROFILE
-mstApp.controller('ProfileController', function($scope,$rootScope,$http,$sce,$window, UserRestService, annotsFactory, ContentHeaderFactory,Session) {
+mstrApp.controller('ProfileController', function($scope,$rootScope,$http,$sce,$window, UserRestService, annotsFactory, ContentHeaderFactory,Session) {
     $scope.headers = ["Édition du profil"];$scope.title = {title:"Mes",subtitle:"informations"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
     $scope.profile = Session.user;
 
@@ -689,7 +689,7 @@ mstApp.controller('ProfileController', function($scope,$rootScope,$http,$sce,$wi
 
 });
 //ADMIN
-mstApp.controller('AdminController', function($scope,$rootScope,$http,$sce,$window, AdminRestService, annotsFactory, ContentHeaderFactory,Session) {
+mstrApp.controller('AdminController', function($scope,$rootScope,$http,$sce,$window, AdminRestService, annotsFactory, ContentHeaderFactory,Session) {
     $scope.headers = ["Administration"];$scope.title = {title:"Gestion",subtitle:"du site"};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
     $scope.profile = Session.user;
 

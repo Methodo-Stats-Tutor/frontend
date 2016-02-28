@@ -1,4 +1,4 @@
-var app = angular.module('mstUtils', []);
+var app = angular.module('mstrUtils', []);
 
 app.factory('MstUtils', function () {
     return {
