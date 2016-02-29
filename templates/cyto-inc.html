@@ -51,12 +51,11 @@
                 }
             };
             usr = Url.get.usr;
+            host = Url.get.host;
+            port = Url.get.port;
 
                 //on click
             clickFunc = function(){
-                cy.nodes().on("click", function(){
-                      parent.angular.element('#cyto').scope().infoConcept(this.data('id'));
-                });
             }
             //init de cyto
 			$(function(){
@@ -102,8 +101,12 @@
 							}
 						}
 					],
-                    elements: $.getJSON('http://localhost:8081/mstr/rest/tuples/getOntoCytoGraph/'+usr),//dangeureux mais pas réussit à récupérer le data depuis angular en async - à suivre
-                    ready:function(event){clickFunc();}
+                    elements: $.getJSON('http://'+host+':'+port+'/mstr/rest/tuples/getOntoCytoGraph/'+usr),//dangeureux mais pas réussit à récupérer le data depuis angular en async - à suivre piste ici https://gist.github.com/maxkfranz/a1aea574f0e248b2b38e
+                    ready:function(event){
+                cy.nodes().on("click", function(){
+                      parent.angular.element('#cyto').scope().infoConcept(this.data('id'));
+                });
+                    }
 				});
                 cy.zoomingEnabled( false );
 

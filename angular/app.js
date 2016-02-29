@@ -284,16 +284,20 @@ mstrApp.controller('AccueilController', function($scope, $window,  ContentHeader
 });
 
 
-mstrApp.controller('ConceptCloudController', function($scope, $window,  ContentHeaderFactory, TupleRestService, Session) {
+mstrApp.controller('ConceptCloudController', function($scope, $window, $q,  ContentHeaderFactory, TupleRestService, Session,ROOTS) {
     $scope.headers = ["Choux-Fleur"];$scope.title = {title:"",subtitle:""};$scope.$watch(function(){ return ContentHeaderFactory.getCurrentIndex(); },function(id){ $scope.section = id; }); $scope.$watch(function(){ return $scope.section; },function(id){ ContentHeaderFactory.setCurrentIndex(id); ContentHeaderFactory.setSongs($scope.headers.slice(0,id)); });ContentHeaderFactory.setTitles($scope.title);ContentHeaderFactory.setCurrentIndex(1);
     $scope.init = function(){
+        $scope.usr = Session.user.uid;
+        $scope.host = ROOTS.webServices.replace(/.*\/\/(.*):.*$/g, "$1");
+        $scope.port = ROOTS.webServices.replace(/.*\/\/.*:(\d+).*$/g, "$1");
+        $scope.link = "templates/cyto-inc.html?usr=" + $scope.usr + "&host="+ $scope.host + "&port=" + $scope.port;
     };
     $scope.init();
 
     $scope.label ;
     $scope.comment;
     $scope.infoConcept = function(uri){
-TupleRestService.getOntoDetails(uri)
+        TupleRestService.getOntoDetails(uri)
         .success( function(data) {
             if(data.results.bindings[0]){
                 $scope.label = data.results.bindings[0].NOTIONLAB.value;
@@ -303,24 +307,7 @@ TupleRestService.getOntoDetails(uri)
     $scope.$apply();
     };
 
-    $scope.getToto = function(){
-        TupleRestService.getOntoCytoGraph(Session.user.uid)
-        .success(function(data){
-            return(data);
-            //document.getElementById("cyto").contentWindow.voieLactee( $scope.theUI); 
-            //document.getElementById("cyto").contentWindow.addData( data.elements ); 
-        })
-    };
-    
-    $scope.iframeLoadedCallBack = function(){
-        $scope.$apply(function(){
-        TupleRestService.getOntoCytoGraph(Session.user.uid)
-        .success(function(data){
-           // document.getElementById("cyto").contentWindow.addData( data.elements ); 
-        });
-        });
 
-    };
 });
 
 mstrApp.directive('contentHeader',function(){
